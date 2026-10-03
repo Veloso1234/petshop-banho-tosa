@@ -1,0 +1,21 @@
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+
+# Redireciona todas as chamadas de API para a Netlify Function
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+
+# Redireciona a raiz para caixa.html
+[[redirects]]
+  from = "/"
+  to = "/caixa.html"
+  status = 200
+
+# Permite acesso direto a /tv caso o usuário digite sem .html
+[[redirects]]
+  from = "/tv"
+  to = "/tv.html"
+  status = 200

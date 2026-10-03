@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pet Shop - TV Banho e Tosa</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    body {
+      background: #F5F0EB;
+      overflow-x: hidden;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER TV -->
+  <header class="tv-header">
+    <div class="tv-header-left">
+      <span style="font-size:2.8rem;">🐾</span>
+      <div class="tv-header-title">
+        <h1>Banho e Tosa</h1>
+        <div class="tv-header-date" id="tv-data-hoje">Carregando data...</div>
+      </div>
+    </div>
+    <div class="tv-header-right">
+      <span class="tv-counter" id="tv-contador">0 fichas</span>
+      <div class="status-online">
+        <span class="status-dot"></span>
+        <span>Ao vivo</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- FICHAS -->
+  <div class="tv-container">
+    <div class="tv-fichas-grid" id="tv-fichas">
+      <!-- Fichas do dia aparecerão aqui automaticamente -->
+    </div>
+
+    <!-- Estado vazio -->
+    <div class="tv-empty-state" id="tv-vazio">
+      <span class="emoji">🐕</span>
+      <p>Nenhum cachorro aguardando no momento</p>
+      <div class="sub">Os novos cadastros do dia aparecerão aqui automaticamente.</div>
+    </div>
+  </div>
+
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <script src="/js/tv.js"></script>
+</body>
+</html>

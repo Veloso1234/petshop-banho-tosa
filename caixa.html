@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pet Shop - Caixa</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-logo">
+      <span class="emoji">🐾</span>
+      <div>
+        <h1>Pet Shop - Banho e Tosa</h1>
+        <span class="header-subtitle">Sistema do Caixa & Agendamentos</span>
+      </div>
+    </div>
+    <div class="header-nav">
+      <a href="/tv.html" target="_blank">📺 Abrir Tela da TV ↗</a>
+    </div>
+  </header>
+
+  <!-- ABAS -->
+  <div class="container">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="trocarAba('cadastro')" id="tab-cadastro">
+        📝 Nova Ficha / Agendar
+      </button>
+      <button class="tab-btn" onclick="trocarAba('fichas')" id="tab-fichas">
+        🐶 Agendamentos <span id="contador-fichas"></span>
+      </button>
+      <button class="tab-btn" onclick="trocarAba('historico')" id="tab-historico">
+        📋 Histórico
+      </button>
+    </div>
+
+    <!-- ABA: CADASTRO -->
+    <div class="tab-content active" id="conteudo-cadastro">
+      <div class="form-card">
+        <h2 class="section-title">
+          <span class="emoji">📝</span> Cadastrar Ficha ou Agendamento
+        </h2>
+
+        <form id="form-ficha" onsubmit="enviarFicha(event)">
+          <!-- SEÇÃO 1: DADOS DO TUTOR -->
+          <div class="form-section">
+            <h3 class="form-section-title"><span class="emoji">👤</span> Dados do Tutor</h3>
+            <div class="form-group">
+              <label>Nome do tutor <span class="required">*</span></label>
+              <input type="text" id="nome_tutor" placeholder="Ex: João Silva, Maria Santos..." required>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label>Telefone do tutor <span style="font-weight:normal; color:#777; font-size:0.85rem;">(celular com DDD)</span></label>
+              <input type="text" id="telefone_tutor" placeholder="(11) 99999-9999" maxlength="15">
+            </div>
+          </div>
+
+          <!-- SEÇÃO 2: DADOS DO PET -->
+          <div class="form-section">
+            <h3 class="form-section-title"><span class="emoji">🐶</span> Dados do Pet</h3>
+            <div class="form-group" style="margin-bottom:0;">
+              <label>Nome do cachorro <span class="required">*</span></label>
+              <input type="text" id="nome_cachorro" placeholder="Ex: Mel, Thor, Luna..." required>
+            </div>
+          </div>
+
+          <!-- SEÇÃO 3: AGENDAMENTO -->
+          <div class="form-section">
+            <h3 class="form-section-title"><span class="emoji">📅</span> Agendamento</h3>
+            <div class="form-group">
+              <label>Data do atendimento <span class="required">*</span></label>
+              <div class="quick-date-buttons">
+                <button type="button" class="btn-quick-date active" onclick="definirDataRapida('hoje', this)">🌟 Hoje</button>
+                <button type="button" class="btn-quick-date" onclick="definirDataRapida('amanha', this)">📅 Amanhã</button>
+                <button type="button" class="btn-quick-date" onclick="definirDataRapida('sabado', this)">🗓️ Próximo Sábado</button>
+              </div>
+              <input type="date" id="data_atendimento" required>
+            </div>
+
+            <div class="form-group" style="margin-bottom:0;">
+              <label>Horário do atendimento <span class="required">*</span></label>
+              <div class="quick-time-buttons">
+                <button type="button" class="btn-quick-time" onclick="definirHorarioRapido('08:00', this)">08:00</button>
+                <button type="button" class="btn-quick-time" onclick="definirHorarioRapido('08:30', this)">08:30</button>
+                <button type="button" class="btn-quick-time active" onclick="definirHorarioRapido('09:00', this)">09:00</button>
+                <button type="button" class="btn-quick-time" onclick="definirHorarioRapido('09:30', this)">09:30</button>
+                <button type="button" class="btn-quick-time" onclick="definirHorarioRapido('10:00', this)">10:00</button>
+                <button type="button" class="btn-quick-time" onclick="definirHorarioRapido('10:30', this)">10:30</button>
+                <button type="button" class="btn-quick-time" onclick="definirHorarioRapido('11:00', this)">11:00</button>
+                <button type="button" class="btn-quick-time" onclick="definirHorarioRapido('14:00', this)">14:00</button>
+                <button type="button" class="btn-quick-time" onclick="definirHorarioRapido('15:00', this)">15:00</button>
+              </div>
+              <input type="time" id="horario_atendimento" required value="09:00">
+            </div>
+          </div>
+
+          <!-- SEÇÃO 4: SERVIÇOS -->
+          <div class="form-section">
+            <h3 class="form-section-title"><span class="emoji">✂️</span> Serviços Solicitados</h3>
+            
+            <div class="form-group">
+              <label>Pacote</label>
+              <div class="radio-group">
+                <div class="radio-option">
+                  <input type="radio" id="pacote_sim" name="pacote" value="Sim">
+                  <label for="pacote_sim">✅ Sim</label>
+                </div>
+                <div class="radio-option">
+                  <input type="radio" id="pacote_nao" name="pacote" value="Não" checked>
+                  <label for="pacote_nao">❌ Não</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Serviços <span class="required">*</span></label>
+              <div class="checkbox-group">
+                <div class="checkbox-option">
+                  <input type="checkbox" id="servico_banho" name="servico" value="Banho">
+                  <label for="servico_banho"><span class="check-icon">✓ </span>🛁 Banho</label>
+                </div>
+                <div class="checkbox-option">
+                  <input type="checkbox" id="servico_tosa_total" name="servico" value="Tosa total">
+                  <label for="servico_tosa_total"><span class="check-icon">✓ </span>✂️ Tosa total</label>
+                </div>
+                <div class="checkbox-option">
+                  <input type="checkbox" id="servico_tosa_raca" name="servico" value="Tosa da raça">
+                  <label for="servico_tosa_raca"><span class="check-icon">✓ </span>🐩 Tosa da raça</label>
+                </div>
+                <div class="checkbox-option">
+                  <input type="checkbox" id="servico_tosa_tesoura" name="servico" value="Tosa na tesoura">
+                  <label for="servico_tosa_tesoura"><span class="check-icon">✓ </span>✂️ Tosa na tesoura</label>
+                </div>
+                <div class="checkbox-option">
+                  <input type="checkbox" id="servico_tosa_higienica" name="servico" value="Tosa higiênica">
+                  <label for="servico_tosa_higienica"><span class="check-icon">✓ </span>🧴 Tosa higiênica</label>
+                </div>
+                <div class="checkbox-option">
+                  <input type="checkbox" id="servico_hidratacao" name="servico" value="Hidratação">
+                  <label for="servico_hidratacao"><span class="check-icon">✓ </span>✨ Hidratação</label>
+                </div>
+                <div class="checkbox-option">
+                  <input type="checkbox" id="servico_desembolo" name="servico" value="Desembolo">
+                  <label for="servico_desembolo"><span class="check-icon">✓ </span>🧶 Desembolo</label>
+                </div>
+                <div class="checkbox-option">
+                  <input type="checkbox" id="servico_subpelo" name="servico" value="Remoção de subpelo">
+                  <label for="servico_subpelo"><span class="check-icon">✓ </span>🪮 Remoção de subpelo</label>
+                </div>
+                <div class="checkbox-option">
+                  <input type="checkbox" id="servico_unha" name="servico" value="Corte de unha">
+                  <label for="servico_unha"><span class="check-icon">✓ </span>💅 Corte de unha</label>
+                </div>
+                <div class="checkbox-option">
+                  <input type="checkbox" id="servico_ouvido" name="servico" value="Limpeza de ouvido">
+                  <label for="servico_ouvido"><span class="check-icon">✓ </span>👂 Limpeza de ouvido</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom:0;">
+              <label>Perfume</label>
+              <div class="radio-group">
+                <div class="radio-option">
+                  <input type="radio" id="perfume_sim" name="perfume" value="Sim">
+                  <label for="perfume_sim">🌸 Sim</label>
+                </div>
+                <div class="radio-option">
+                  <input type="radio" id="perfume_nao" name="perfume" value="Não" checked>
+                  <label for="perfume_nao">❌ Não</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SEÇÃO 5: LOGÍSTICA / FORMA DE ENTREGA -->
+          <div class="form-section">
+            <h3 class="form-section-title"><span class="emoji">🚗</span> Logística de Atendimento</h3>
+            <div class="form-group" style="margin-bottom:0;">
+              <label>Forma de entrega / busca <span class="required">*</span></label>
+              <div class="delivery-options">
+                <label class="delivery-radio-option" for="entrega_tutor">
+                  <input type="radio" id="entrega_tutor" name="forma_entrega" value="tutor" checked onchange="alternarCampoEndereco()">
+                  <span>🟢 Tutor vai levar ao pet shop</span>
+                </label>
+                <label class="delivery-radio-option" for="entrega_driver">
+                  <input type="radio" id="entrega_driver" name="forma_entrega" value="driver" onchange="alternarCampoEndereco()">
+                  <span>🟠 Motorista vai buscar no endereço</span>
+                </label>
+              </div>
+
+              <!-- Campo condicional de endereço -->
+              <div id="container-endereco-busca" class="delivery-address-container" style="display:none;">
+                <label for="endereco_busca">Endereço para busca <span class="required">*</span></label>
+                <input type="text" id="endereco_busca" placeholder="Ex: Rua das Flores, 123 - Apto 42, Bairro Centro">
+              </div>
+            </div>
+          </div>
+
+          <!-- SEÇÃO 6: FINANCEIRO -->
+          <div class="form-section">
+            <h3 class="form-section-title"><span class="emoji">💰</span> Financeiro</h3>
+            <div class="form-group" style="margin-bottom:0;">
+              <label>Valor do atendimento <span style="font-weight:normal; color:#777; font-size:0.85rem;">(visível apenas no caixa)</span></label>
+              <input type="text" id="valor" placeholder="R$ 0,00" style="font-size:1.1rem; font-weight:600; color:#2E7D32;">
+            </div>
+          </div>
+
+          <!-- SEÇÃO 7: OBSERVAÇÕES -->
+          <div class="form-section">
+            <h3 class="form-section-title"><span class="emoji">📝</span> Observações Especiais</h3>
+            <div class="form-group" style="margin-bottom:0;">
+              <textarea id="observacoes" placeholder="Instruções específicas para o banho/tosa. Ex: Manter o pelo da cabeça e fazer acabamento nas patas."></textarea>
+            </div>
+          </div>
+
+          <!-- Botão Enviar -->
+          <button type="submit" class="btn-primary" id="btn-enviar" style="margin-top:10px;">
+            🐾 ENVIAR PARA BANHO E TOSA
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ABA: FICHAS / AGENDAMENTOS -->
+    <div class="tab-content" id="conteudo-fichas">
+      <h2 class="section-title">
+        <span class="emoji">🐶</span> Agendamentos de Banho e Tosa (Ordenados por Horário)
+      </h2>
+
+      <!-- Barra de Filtros de Data -->
+      <div class="date-filters-bar">
+        <div class="date-quick-nav">
+          <button class="filter-btn active" id="filtro-btn-hoje" onclick="aplicarFiltroData('hoje')">
+            🌟 Hoje <span id="badge-count-hoje"></span>
+          </button>
+          <button class="filter-btn" id="filtro-btn-amanha" onclick="aplicarFiltroData('amanha')">
+            📅 Amanhã <span id="badge-count-amanha"></span>
+          </button>
+          <button class="filter-btn" id="filtro-btn-todos" onclick="aplicarFiltroData('todos')">
+            🗓️ Todos os dias <span id="badge-count-todos"></span>
+          </button>
+        </div>
+
+        <div class="date-picker-box">
+          <label for="filtro-data-especifica">Escolher data:</label>
+          <input type="date" id="filtro-data-especifica" onchange="aplicarFiltroData('especifica')">
+        </div>
+      </div>
+
+      <div class="fichas-lista" id="lista-fichas">
+        <!-- Fichas carregadas aqui dinamicamente -->
+      </div>
+    </div>
+
+    <!-- ABA: HISTÓRICO -->
+    <div class="tab-content" id="conteudo-historico">
+      <h2 class="section-title">
+        <span class="emoji">📋</span> Histórico de Fichas
+      </h2>
+      <div id="historico-container">
+        <!-- Histórico será carregado aqui -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE EDIÇÃO DE AGENDAMENTO -->
+  <div class="modal-overlay" id="modal-editar">
+    <div class="modal">
+      <h3>✏️ Editar Agendamento</h3>
+      <p style="margin-bottom:15px; font-size:0.9rem; color:#666;">Altere os dados do atendimento:</p>
+
+      <form id="form-editar" onsubmit="salvarEdicao(event)">
+        <input type="hidden" id="edit-id">
+
+        <div class="form-group" style="margin-bottom:14px;">
+          <label>Nome do tutor <span class="required">*</span></label>
+          <input type="text" id="edit-nome-tutor" required>
+        </div>
+
+        <div class="form-group" style="margin-bottom:14px;">
+          <label>Telefone do tutor <span style="font-weight:normal; color:#777; font-size:0.85rem;">(celular com DDD)</span></label>
+          <input type="text" id="edit-telefone-tutor" placeholder="(11) 99999-9999" maxlength="15">
+        </div>
+
+        <div class="form-group" style="margin-bottom:14px;">
+          <label>Nome do cachorro <span class="required">*</span></label>
+          <input type="text" id="edit-nome-cachorro" required>
+        </div>
+
+        <div class="form-group" style="margin-bottom:14px;">
+          <label>📅 Data do atendimento <span class="required">*</span></label>
+          <input type="date" id="edit-data-atendimento" required>
+        </div>
+
+        <div class="form-group" style="margin-bottom:14px;">
+          <label>🕐 Horário do atendimento (24h) <span class="required">*</span></label>
+          <input type="time" id="edit-horario-atendimento" required>
+        </div>
+
+        <div class="form-group" style="margin-bottom:14px;">
+          <label>Pacote</label>
+          <div class="radio-group">
+            <div class="radio-option">
+              <input type="radio" id="edit-pacote-sim" name="edit_pacote" value="Sim">
+              <label for="edit-pacote-sim">Sim</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" id="edit-pacote-nao" name="edit_pacote" value="Não">
+              <label for="edit-pacote-nao">Não</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:14px;">
+          <label>Serviços <span class="required">*</span></label>
+          <div class="checkbox-group">
+            <div class="checkbox-option">
+              <input type="checkbox" id="edit-servico-banho" name="edit_servico" value="Banho">
+              <label for="edit-servico-banho"><span class="check-icon">✓ </span>Banho</label>
+            </div>
+            <div class="checkbox-option">
+              <input type="checkbox" id="edit-servico-tosa-total" name="edit_servico" value="Tosa total">
+              <label for="edit-servico-tosa-total"><span class="check-icon">✓ </span>Tosa total</label>
+            </div>
+            <div class="checkbox-option">
+              <input type="checkbox" id="edit-servico-tosa-raca" name="edit_servico" value="Tosa da raça">
+              <label for="edit-servico-tosa-raca"><span class="check-icon">✓ </span>Tosa da raça</label>
+            </div>
+            <div class="checkbox-option">
+              <input type="checkbox" id="edit-servico-tosa-tesoura" name="edit_servico" value="Tosa na tesoura">
+              <label for="edit-servico-tosa-tesoura"><span class="check-icon">✓ </span>Tosa na tesoura</label>
+            </div>
+            <div class="checkbox-option">
+              <input type="checkbox" id="edit-servico-tosa-higienica" name="edit_servico" value="Tosa higiênica">
+              <label for="edit-servico-tosa-higienica"><span class="check-icon">✓ </span>Tosa higiênica</label>
+            </div>
+            <div class="checkbox-option">
+              <input type="checkbox" id="edit-servico-hidratacao" name="edit_servico" value="Hidratação">
+              <label for="edit-servico-hidratacao"><span class="check-icon">✓ </span>Hidratação</label>
+            </div>
+            <div class="checkbox-option">
+              <input type="checkbox" id="edit-servico-desembolo" name="edit_servico" value="Desembolo">
+              <label for="edit-servico-desembolo"><span class="check-icon">✓ </span>Desembolo</label>
+            </div>
+            <div class="checkbox-option">
+              <input type="checkbox" id="edit-servico-subpelo" name="edit_servico" value="Remoção de subpelo">
+              <label for="edit-servico-subpelo"><span class="check-icon">✓ </span>Remoção de subpelo</label>
+            </div>
+            <div class="checkbox-option">
+              <input type="checkbox" id="edit-servico-unha" name="edit_servico" value="Corte de unha">
+              <label for="edit-servico-unha"><span class="check-icon">✓ </span>Corte de unha</label>
+            </div>
+            <div class="checkbox-option">
+              <input type="checkbox" id="edit-servico-ouvido" name="edit_servico" value="Limpeza de ouvido">
+              <label for="edit-servico-ouvido"><span class="check-icon">✓ </span>Limpeza de ouvido</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:14px;">
+          <label>Perfume</label>
+          <div class="radio-group">
+            <div class="radio-option">
+              <input type="radio" id="edit-perfume-sim" name="edit_perfume" value="Sim">
+              <label for="edit-perfume-sim">Sim</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" id="edit-perfume-nao" name="edit_perfume" value="Não">
+              <label for="edit-perfume-nao">Não</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Logística de Atendimento (Editar) -->
+        <div class="form-group" style="margin-bottom:14px;">
+          <label>Forma de entrega / busca <span class="required">*</span></label>
+          <div class="delivery-options">
+            <label class="delivery-radio-option" for="edit-entrega-tutor">
+              <input type="radio" id="edit-entrega-tutor" name="edit_forma_entrega" value="tutor" onchange="alternarCampoEnderecoEdicao()">
+              <span>🟢 Tutor vai levar ao pet shop</span>
+            </label>
+            <label class="delivery-radio-option" for="edit-entrega-driver">
+              <input type="radio" id="edit-entrega-driver" name="edit_forma_entrega" value="driver" onchange="alternarCampoEnderecoEdicao()">
+              <span>🟠 Motorista vai buscar no endereço</span>
+            </label>
+          </div>
+
+          <div id="edit-container-endereco-busca" class="delivery-address-container" style="display:none; margin-top:10px;">
+            <label for="edit-endereco-busca">Endereço para busca <span class="required">*</span></label>
+            <input type="text" id="edit-endereco-busca" placeholder="Ex: Rua das Flores, 123">
+          </div>
+        </div>
+
+        <!-- Financeiro (Editar) -->
+        <div class="form-group" style="margin-bottom:14px;">
+          <label>Valor do atendimento</label>
+          <input type="text" id="edit-valor" placeholder="R$ 0,00" style="font-size:1.05rem; font-weight:600; color:#2E7D32;">
+        </div>
+
+        <div class="form-group" style="margin-bottom:14px;">
+          <label>Observações</label>
+          <textarea id="edit-observacoes"></textarea>
+        </div>
+
+        <div class="modal-buttons">
+          <button type="button" class="btn-modal-cancel" onclick="fecharModalEdicao()">Cancelar</button>
+          <button type="submit" class="btn-modal-save" id="btn-salvar-edicao">Salvar Alterações</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL DE CONFIRMAÇÃO PARA CONCLUIR -->
+  <div class="modal-overlay" id="modal-confirmar">
+    <div class="modal text-center">
+      <h3>✅ Concluir atendimento?</h3>
+      <p id="modal-mensagem">Tem certeza que deseja concluir esta ficha?</p>
+      <div class="modal-buttons">
+        <button class="btn-modal-cancel" onclick="fecharModalConcluir()">Cancelar</button>
+        <button class="btn-modal-confirm" id="btn-confirmar-concluir">Sim, concluir</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE CONFIRMAÇÃO PARA CANCELAR AGENDAMENTO -->
+  <div class="modal-overlay" id="modal-cancelar">
+    <div class="modal text-center">
+      <h3>❌ Cancelar agendamento?</h3>
+      <p id="modal-cancelar-mensagem">Tem certeza que deseja cancelar este agendamento?</p>
+      <div class="modal-buttons">
+        <button class="btn-modal-cancel" onclick="fecharModalCancelar()">Não, manter</button>
+        <button class="btn-modal-danger" id="btn-confirmar-cancelar">Sim, cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <script src="/js/caixa.js"></script>
+</body>
+</html>

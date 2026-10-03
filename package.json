@@ -1,0 +1,17 @@
+{
+  "name": "petshop-banho-tosa",
+  "version": "1.0.0",
+  "description": "Sistema para pet shop - comunicação entre caixa e banho/tosa",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.8",
+    "express": "^4.18.2",
+    "serverless-http": "^3.2.0",
+    "socket.io": "^4.7.2",
+    "sql.js": "^1.9.0"
+  }
+}
