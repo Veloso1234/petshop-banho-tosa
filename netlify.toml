@@ -2,6 +2,11 @@
   publish = "public"
   functions = "netlify/functions"
 
+# Empacota a função com esbuild (o bundler padrão falha ao percorrer as dependências)
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["sql.js"]
+
 # Redireciona todas as chamadas de API para a Netlify Function
 [[redirects]]
   from = "/api/*"
